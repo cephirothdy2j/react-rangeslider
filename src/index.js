@@ -36,6 +36,10 @@ class Slider extends Component {
 		orientation: PropTypes.string,
 		onChange: PropTypes.func,
 		className: PropTypes.string,
+		wrapperStyle: PropTypes.object,
+		fillStyle: PropTypes.object,
+		handleStyle: PropTypes.object,
+		valueStyle: PropTypes.object
 	}
 
 	static defaultProps = {
@@ -155,8 +159,8 @@ class Slider extends Component {
   }
 
   render() {
-  	let dimension, direction, position, coords, fillStyle, handleStyle;
-  	let { value, orientation, className } = this.props;
+  	let dimension, direction, position, coords;
+  	let { value, orientation, className, wrapperStyle, fillStyle, handleStyle, valueStyle } = this.props;
 
   	dimension = constants.orientation[orientation].dimension;
   	direction = constants.orientation[orientation].direction;
@@ -164,26 +168,33 @@ class Slider extends Component {
   	position = this.getPositionFromValue(value);
   	coords = this.coordinates(position);
 
-  	fillStyle = {[dimension]: `${coords.fill}px`};
-  	handleStyle = {[direction]: `${coords.handle}px`};
+		let mergedFillStyle = Object.assign({}, {[dimension]: `${coords.fill}px`}, fillStyle);
+		let mergedHandleStyle = Object.assign({}, {[direction]: `${coords.handle}px`}, fillStyle);
 
   	return (
   		<div
 	  		ref="slider"
-	  		className={cx('rangeslider ', 'rangeslider-' + orientation, className)}
+				style={wrapperStyle}
+				className={cx('rangeslider ', 'rangeslider-' + orientation, className)}
 	  		onMouseDown={this.handleDrag}
 	  		onClick={this.handleNoop}>
 	  		<div
 		  		ref="fill"
 		  		className="rangeslider__fill"
-		  		style={fillStyle} />
+		  		style={mergedFillStyle} />
 	  		<div
 		  		ref="handle"
 		  		className="rangeslider__handle"
 					onMouseDown={this.handleStart}
 					onTouchMove={this.handleDrag}
 					onClick={this.handleNoop}
-		  		style={handleStyle} />
+		  		style={mergedHandleStyle}>
+					<div
+						className="rangeslider__value"
+						style={valueStyle}>
+						{value}
+					</div>
+				</div>
   		</div>
 		);
   }
