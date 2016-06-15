@@ -169,7 +169,7 @@ class Slider extends Component {
   	coords = this.coordinates(position);
 
 		let mergedFillStyle = Object.assign({}, {[dimension]: `${coords.fill}px`}, fillStyle);
-		let mergedHandleStyle = Object.assign({}, {[direction]: `${coords.handle}px`}, fillStyle);
+		let mergedHandleStyle = Object.assign({}, {[direction]: `${coords.handle}px`}, handleStyle);
 
   	return (
   		<div
