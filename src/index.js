@@ -63,7 +63,7 @@ class Slider extends Component {
   }
 
 	componentWillUnmount() {
-		document.removeEventListener('resize', this.handleUpdate);
+		window.removeEventListener('resize', this.handleUpdate);
 	}
 
   handleUpdate = () => {
