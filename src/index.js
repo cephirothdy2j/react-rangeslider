@@ -40,7 +40,7 @@ class Slider extends Component {
 		fillStyle: PropTypes.object,
 		handleStyle: PropTypes.object,
 		valueStyle: PropTypes.object
-	}
+	};
 
 	static defaultProps = {
 		min: 0,
@@ -61,6 +61,10 @@ class Slider extends Component {
 		window.addEventListener('resize', this.handleUpdate);
 		this.handleUpdate();
   }
+
+	componentWillUnmount() {
+		document.removeEventListener('resize', this.handleUpdate);
+	}
 
   handleUpdate = () => {
   	let { orientation } = this.props;
