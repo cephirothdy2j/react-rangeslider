@@ -48,6 +48,7 @@ class Slider extends Component {
 		step: 1,
 		value: 0,
 		orientation: 'horizontal',
+		disabled:false
 	}
 
 	state = {
@@ -79,8 +80,8 @@ class Slider extends Component {
 
   handleDrag = (e) => {
   	this.handleNoop(e);
-  	let value, { onChange } = this.props;
-  	if (!onChange) return;
+  	let value, { onChange, disabled } = this.props;
+  	if (!onChange || disabled) return;
 
   	value = this.position(e);
   	onChange && onChange(value);
@@ -160,7 +161,7 @@ class Slider extends Component {
 
   render() {
   	let dimension, direction, position, coords;
-  	let { value, orientation, className, wrapperStyle, fillStyle, handleStyle, valueStyle } = this.props;
+  	let { value, orientation, className, wrapperStyle, fillStyle, handleStyle, valueStyle, disabled } = this.props;
 
   	dimension = constants.orientation[orientation].dimension;
   	direction = constants.orientation[orientation].direction;
@@ -168,13 +169,14 @@ class Slider extends Component {
   	position = this.getPositionFromValue(value);
   	coords = this.coordinates(position);
 
+		let mergedWrapperStyle = Object.assign({}, wrapperStyle, {pointerEvents: disabled ? 'none' : 'auto'});
 		let mergedFillStyle = Object.assign({}, {[dimension]: `${coords.fill}px`}, fillStyle);
 		let mergedHandleStyle = Object.assign({}, {[direction]: `${coords.handle}px`}, handleStyle);
 
   	return (
   		<div
 	  		ref="slider"
-				style={wrapperStyle}
+				style={mergedWrapperStyle}
 				className={cx('rangeslider ', 'rangeslider-' + orientation, className)}
 	  		onMouseDown={this.handleDrag}
 	  		onClick={this.handleNoop}>
